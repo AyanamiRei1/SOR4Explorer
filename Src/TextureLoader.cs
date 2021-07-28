@@ -39,7 +39,7 @@ namespace SOR4Explorer
             writer.Write((UInt32)image.Width);
             writer.Write((UInt32)image.Height);
             writer.Write((UInt32)1);                            // Mipmap count
-            writer.Write((Byte)image.Width*image.Height*4);   // Uncompressed size
+            writer.Write((UInt16)image.Width*image.Height*4);   // Uncompressed size
 
             var imageData = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
             byte[] line = new byte[width * 4];
