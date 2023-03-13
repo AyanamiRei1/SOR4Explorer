@@ -221,13 +221,18 @@ namespace SOR4Explorer
 
             try
             {
-                int fileIndex = 1;
                 dataFolder = Path.Combine(installationPath, "data");
 
-                string texturesFile = Path.Combine(dataFolder, "textures");
-                string tableFile = Path.Combine(dataFolder, "texture_table");
-                while (File.Exists(texturesFile) && File.Exists(tableFile))
+                string[] texturesFiles = Directory.GetFiles(dataFolder, "textures*");
+                string[] tableFiles = Directory.GetFiles(dataFolder, "texture_table*");
+                Array.Sort(texturesFiles);
+                Array.Sort(tableFiles);
+
+                for (int i = 0; i < texturesFiles.Length; ++i)
                 {
+                    string texturesFile = texturesFiles[i];
+                    string tableFile = tableFiles[i];
+
                     DataFiles[texturesFile] = File.OpenRead(texturesFile);
                     Lists[texturesFile] = new TextureList(tableFile, texturesFile);
 
@@ -237,10 +242,6 @@ namespace SOR4Explorer
                         if (file.original == false)
                             nonOriginalCount++;
                     }
-
-                    fileIndex++;
-                    texturesFile = Path.Combine(dataFolder, $"textures{fileIndex:D2}");
-                    tableFile = Path.Combine(dataFolder, $"texture_table{fileIndex:D2}");
                 }
             }
             catch (Exception)
